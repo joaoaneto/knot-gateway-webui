@@ -1,0 +1,4 @@
+* text=auto
+
+docker-knot-web.service text eol=lf
+docker-knot-web.sh text eol=lf
