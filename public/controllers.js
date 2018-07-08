@@ -114,8 +114,14 @@ appCtrls.controller('SignupController', function SignupController($scope, $state
   $scope.signup = function signup() {
     return IdentityApi
       .signup($scope.form)
+      // .then(function onSignedUp() {
+      //   return StateService.changeState(API_STATES.REBOOTING);
+      // });
       .then(function onSignedUp() {
-        return StateService.changeState(API_STATES.REBOOTING);
+        return AuthService.signin($scope.form);
+      })
+      .then(function onSignedIn() {
+        return StateService.changeState(API_STATES.READY);
       });
   };
 });
