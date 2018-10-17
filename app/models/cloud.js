@@ -19,6 +19,14 @@ var fiwareSettingsSchema = new mongoose.Schema({
   orion: {
     hostname: String,
     port: Number
+  },
+  idm: {
+    hostname: String,
+    port: Number,
+    clientId: String,
+    clientSecret: String,
+    callbackUrl: String,
+    code: String    
   }
 }, options);
 

@@ -161,8 +161,10 @@ appServices.factory('GatewayApi', function GatewayApi($http) {
       body.hostname = config.hostname;
       body.port = config.port;
     } else if (config.platform === 'FIWARE') {
+      body.securityRequired = config.securityRequired;
       body.iota = config.iota;
       body.orion = config.orion;
+      body.idm = config.idm;
     }
 
     return $http.put('/api/cloud', body);

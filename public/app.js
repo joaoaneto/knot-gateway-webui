@@ -85,6 +85,17 @@ app.config(function config(
         }
       }
     })
+    .state(VIEW_STATES.CONFIG_CLOUD_SECURITY, {
+      url: '/security',
+      template: require('./views/config.security.html'),
+      controller: 'CloudController',
+      data: {
+        permissions: {
+          only: PERMISSIONS.CONFIGURE_CLOUD_SECURITY,
+          redirectTo: VIEW_STATES.CONFIG_USER
+        }
+      }
+    })
     .state(VIEW_STATES.CONFIG_USER, {
       url: '/signup',
       template: require('./views/config.signup.html'),
@@ -204,6 +215,7 @@ app.constant('VIEW_STATES', {
   CONFIG: 'config',
   CONFIG_WELCOME: 'config.welcome',
   CONFIG_CLOUD: 'config.cloud',
+  CONFIG_CLOUD_SECURITY: 'config.security',
   CONFIG_USER: 'config.signup',
 
   APP: 'app',
@@ -215,6 +227,7 @@ app.constant('VIEW_STATES', {
 app.constant('API_STATES', {
   REBOOTING: 'rebooting',
   CONFIGURATION_CLOUD: 'configuration-cloud',
+  CONFIGURATION_CLOUD_SECURITY: 'configuration-cloud-security',
   CONFIGURATION_USER: 'configuration-user',
   READY: 'ready'
 });

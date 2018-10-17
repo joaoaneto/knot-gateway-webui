@@ -36,7 +36,7 @@ var update = function update(req, res, next) {
       connectorSvc.setCloudConfig({
         platform: req.body.platform,
         iota: req.body.iota,
-        orion: req.body.orion
+        orion: req.body.orion,
       }, function onCloudConfigSet(setCloudConfigErr) {
         if (setCloudConfigErr) {
           next(setCloudConfigErr);

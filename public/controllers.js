@@ -30,6 +30,10 @@ appCtrls.controller('RebootController', function RebootController($scope, $state
     $state.go(VIEW_STATES.CONFIG_CLOUD);
   });
 
+  $scope.$on(API_STATES.CONFIGURATION_CLOUD_SECURITY, function onConfigurationCloudSecurity() {
+    $state.go(VIEW_STATES.CONFIGURATION_CLOUD_SECURITY);
+  });
+
   $scope.$on(API_STATES.CONFIGURATION_USER, function onConfigurationUser() {
     $state.go(VIEW_STATES.CONFIG_USER);
   });
@@ -74,6 +78,10 @@ appCtrls.controller('AppController', function AppController($scope, $state, Auth
 
   $scope.$on(API_STATES.CONFIGURATION_CLOUD, function onConfigurationCloud() {
     $state.go(VIEW_STATES.CONFIG_CLOUD);
+  });
+
+  $scope.$on(API_STATES.CONFIGURATION_CLOUD_SECURITY, function onConfigurationCloudSecurity() {
+    $state.go(VIEW_STATES.CONFIGURATION_CLOUD_SECURITY);
   });
 
   $scope.$on(API_STATES.CONFIGURATION_USER, function onConfigurationUser() {
@@ -148,8 +156,10 @@ appCtrls.controller('CloudController', function CloudController($scope, $state, 
             $scope.form.hostname = result.hostname;
             $scope.form.port = result.port;
           } else if (result.platform === 'FIWARE') {
+            $scope.form.securityRequired = result.securityRequired;
             $scope.form.iota = result.iota;
             $scope.form.orion = result.orion;
+            $scope.form.idm = result.idm;
           }
           $scope.selectPlatform(result.platform);
         }
@@ -157,11 +167,12 @@ appCtrls.controller('CloudController', function CloudController($scope, $state, 
   }
 
   $scope.save = function save() {
-    return GatewayApi
-      .saveCloudConfig($scope.form)
-      .then(function onCloudConfigSaved() {
-        return StateService.changeState(API_STATES.CONFIGURATION_USER);
-      });
+    // return GatewayApi
+    //   .saveCloudConfig($scope.form)
+    //   .then(function onCloudConfigSaved() {
+    //     return StateService.changeState(API_STATES.CONFIGURATION_USER);
+    //   });
+    return StateService.changeState(API_STATES.CONFIGURATION_CLOUD_SECURITY)
   };
 
   init();

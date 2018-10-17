@@ -16,6 +16,7 @@ var update = {
     .string()
     .valid(supportedPlatforms)
     .required(),
+  securityRequired: joi.boolean().required(),
   hostname: joi
     .string()
     .hostname()
@@ -34,6 +35,16 @@ var update = {
     .object({
       hostname: hostname,
       port: port
+    })
+    .when('platform', { is: 'FIWARE', then: joi.required() }),
+  idm: joi
+    .object({
+      hostname: hostname,
+      port: port,
+      clientId: joi.string().required(),
+      clientSecret: joi.string().required(),
+      callbackUrl: joi.string().required(),
+      code: joi.string().required()
     })
     .when('platform', { is: 'FIWARE', then: joi.required() })
 };
