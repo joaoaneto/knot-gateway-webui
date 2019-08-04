@@ -1,0 +1,22 @@
+hash: a05509e0aa4b3f1ab37d7c0a47b19ead36039baf810cc9a3af31b8a94167148b
+updated: 2019-08-12T00:07:59.511648034-03:00
+imports:
+- name: github.com/golangci/golangci-lint
+  version: 4ba2155996359eabd8800d1fbf3e3a9777c80490
+  subpackages:
+  - cmd/golangci-lint
+- name: github.com/gorilla/mux
+  version: 00bdffe0f3c77e27d2cf6f5c70232a2d3e4d9c15
+- name: github.com/konsorten/go-windows-terminal-sequences
+  version: f55edac94c9bbba5d6182a4be46d86a2c9b5b50e
+- name: github.com/maruel/pre-commit-go
+  version: 4633c1c6e792d3a18a4ce563cb5e66f5da8ef63a
+  subpackages:
+  - cmd/...
+- name: github.com/sirupsen/logrus
+  version: 2a22dbedbad1fd454910cd1f44f210ef90c28464
+- name: golang.org/x/sys
+  version: 51ab0e2deafac1f46c46ad59cf0921be2f180c3d
+  subpackages:
+  - unix
+testImports: []
