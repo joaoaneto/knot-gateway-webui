@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/CESARBR/knot-gateway-webui/backend/pkg/interactors"
 	"github.com/CESARBR/knot-gateway-webui/backend/pkg/logging"
+	"github.com/CESARBR/knot-gateway-webui/backend/pkg/services"
 
 	"github.com/gorilla/mux"
 )
@@ -17,17 +19,20 @@ type Health struct {
 
 // Server represents the HTTP server
 type Server struct {
-	port int
+	port         int
+	stateService *services.StateService
 }
 
-// New creates a new server instance
-func New(port int) Server {
-	return Server{port}
+// NewServer creates a new server instance
+func NewServer(port int) Server {
+	updateStateInteractor := interactors.NewUpdateStateInteractor(nil)
+	stateService := services.NewStateService(updateStateInteractor)
+	return Server{port: port, stateService: stateService}
 }
 
 // Start starts the http server
 func (s *Server) Start() {
-	routers := createRouters()
+	routers := s.createRouters()
 	logger := logging.Get("Server")
 
 	logger.Info(fmt.Sprintf("Listening on %d", s.port))
@@ -37,9 +42,10 @@ func (s *Server) Start() {
 	}
 }
 
-func createRouters() *mux.Router {
+func (s *Server) createRouters() *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/healthcheck", healthcheckHandler)
+	r.HandleFunc("/healthcheck", s.healthcheckHandler)
+	r.HandleFunc("/state", s.updateStateHandler).Methods("PUT")
 	return r
 }
 
@@ -51,7 +57,7 @@ func logRequest(handler http.Handler) http.Handler {
 	})
 }
 
-func healthcheckHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) healthcheckHandler(w http.ResponseWriter, r *http.Request) {
 	logger := logging.Get("Server")
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -60,4 +66,25 @@ func healthcheckHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Error(fmt.Sprintf("Error sending response, %s\n", err))
 	}
+}
+
+type StateData struct {
+	Type string `json:type`
+}
+
+func (s *Server) updateStateHandler(w http.ResponseWriter, r *http.Request) {
+	// logger := logging.Get("Server")
+	// _, err := w.Write(response)
+	// if err != nil {
+	// 	logger.Error(fmt.Sprintf("Error sending response, %s\n", err))
+	// }
+
+	decoder := json.NewDecoder(r.Body)
+	var stateData StateData
+	err := decoder.Decode(&stateData)
+	if err != nil {
+		panic(err)
+	}
+
+	s.stateService.UpdateStateInteractor.Execute(stateData.Type)
 }

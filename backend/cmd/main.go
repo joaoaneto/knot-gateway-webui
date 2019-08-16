@@ -13,6 +13,6 @@ func main() {
 
 	config := config.Load()
 
-	server := server.New(config.Server.Port)
+	server := server.NewServer(config.Server.Port)
 	server.Start()
 }
